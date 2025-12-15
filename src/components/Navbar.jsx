@@ -12,7 +12,7 @@ function Navbar() {
                     <Link to={"/cart"} className='btn btn-outline-success me-3'>
                         <BsCart3 />
                     </Link>
-                    <Link to={"/cart"} className='btn btn-outline-primary'>
+                    <Link to={"/login"} className='btn btn-outline-primary'>
                         <BsPerson />
                     </Link>
                 </div>
