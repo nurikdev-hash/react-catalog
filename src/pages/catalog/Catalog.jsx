@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { getProducts } from '../../redux/productReducer';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,14 +7,36 @@ function Catalog() {
   const products = useSelector((state) => state.product.products);
   const {total,limit,skip} = useSelector((state) => state.product);
   const [page,setPage] = useState(0);
+  const [order,setOrder] = useState("asc");
+  const [sort,setSort] = useState("title");
+  const selectRef = useRef(null);
 
   useEffect(() => {
-    dispatch(getProducts(page));
-  }, [page]);
+    dispatch(getProducts({page,sort,order}));
+  }, [page,order]);
+
+  const sortProducts = ()=>{
+    switch(selectRef.current.value){
+      case "title-asc": setOrder("asc"); setSort("title"); break;
+      case "title-desc": setOrder("desc"); setSort("title"); break;
+      case "price-asc": setOrder("asc"); setSort("price"); break;
+      case "price-desc": setOrder("desc"); setSort("price"); break;
+    }
+  }
 
   return (
     <div className='container py-5'>
-      <h2 className='mb-4 pb-4 border-bottom'>Products</h2>
+      <div className='d-flex justify-content-between mb-4 pb-4 border-bottom'>
+        <h2 className='mb-0'>Products</h2>
+        <div>
+          <select ref={selectRef} className='form-select' onChange={(e)=>{sortProducts();}}>
+            <option value="title-asc">Sort a-z</option>
+            <option value="title-desc">Sort z-a</option>
+            <option value="price-asc">Cheap</option>
+            <option value="price-desc">Expensive</option>
+          </select>
+        </div>
+      </div>
       <div className="row g-4">
         {
           products.length > 0 ? products.map(item => <div key={item.id} className="col-3">
@@ -25,6 +47,7 @@ function Catalog() {
               <div className="card-body">
                 <h5>{item.title}</h5>
                 <p className='card-text' style={{ height: "55px", overflow: "hidden" }}>{item.description}</p>
+                <h6 className='text-muted'>${item.price}</h6>
                 <a href="#" className='btn btn-success'>Add To Cart</a>
               </div>
             </div>

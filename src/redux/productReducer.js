@@ -4,8 +4,10 @@ const LIMIT = 30;
 
 export const getProducts = createAsyncThunk(
     "product/getProducts",
-    async (page)=>{
-        const response = await fetch(`https://dummyjson.com/products?limit=${LIMIT}&skip=${page*LIMIT}`);
+    async ({page,sort,order})=>{
+        const response = await fetch(
+            `https://dummyjson.com/products?limit=${LIMIT}&skip=${page*LIMIT}&sortBy=${sort}&order=${order}`
+        );
         const result = await response.json();
 
         return result;
