@@ -1,18 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getProducts } from '../../redux/productReducer';
+import { filterProducts, getCategories, getProducts } from '../../redux/productReducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 function Catalog() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
+  const categories = useSelector((state) => state.product.categories);
   const {total,limit,skip} = useSelector((state) => state.product);
   const [page,setPage] = useState(0);
   const [order,setOrder] = useState("asc");
   const [sort,setSort] = useState("title");
   const selectRef = useRef(null);
+  const filterSelect = useRef(null);
 
   useEffect(() => {
-    dispatch(getProducts({page,sort,order}));
+    if(filterSelect.current.value == "all"){
+      dispatch(getProducts({page,sort,order}));
+    }else{
+      dispatch(filterProducts({category: filterSelect.current.value,page,sort,order}));
+    }
   }, [page,order]);
 
   const sortProducts = ()=>{
@@ -24,11 +30,25 @@ function Catalog() {
     }
   }
 
+  useEffect(()=>{
+    dispatch(getCategories());
+  },[]);
+
+  const handleFilter = ()=>{
+    dispatch(filterProducts({category: filterSelect.current.value,page,sort,order}));
+  }
+
   return (
     <div className='container py-5'>
       <div className='d-flex justify-content-between mb-4 pb-4 border-bottom'>
         <h2 className='mb-0'>Products</h2>
-        <div>
+        <div className='d-flex'>
+          <select ref={filterSelect} className='form-select me-3' onChange={()=>handleFilter()}>
+            <option value="all" selected>Categories</option>
+            {categories ? categories.map((category)=>
+              <option key={category.slug} value={category.slug}>{category.name}</option>
+            ) : ""}
+          </select>
           <select ref={selectRef} className='form-select' onChange={(e)=>{sortProducts();}}>
             <option value="title-asc">Sort a-z</option>
             <option value="title-desc">Sort z-a</option>
