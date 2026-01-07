@@ -23,6 +23,16 @@ const cartSlice = createSlice({
                 state.totalProducts += 1;
             }
 
+            state.total = parseFloat((state.total + action.payload.price).toFixed(2));
+            localStorage.setItem("cart",JSON.stringify(state));
+        },
+        deleteFromCart: (state,action) => {
+            state.products = state.products.filter(item => item.id != action.payload.id);
+
+            state.totalProducts -= 1;
+            state.total = parseFloat((state.total - (action.payload.price * action.payload.quantity)).toFixed(2));
+            console.log(state.total);
+            console.log(action.payload.price*action.payload.quantity);
             localStorage.setItem("cart",JSON.stringify(state));
         }
     }
@@ -32,4 +42,4 @@ const cartReducer = cartSlice.reducer;
 
 export default cartReducer;
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart,deleteFromCart } = cartSlice.actions;

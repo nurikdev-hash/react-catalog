@@ -49,7 +49,7 @@ function Catalog() {
         <h2 className='mb-0'>Products</h2>
         <div className='d-flex'>
           <select ref={filterSelect} className='form-select me-3' onChange={()=>handleFilter()}>
-            <option value="all" selected>Categories</option>
+            <option value="all">Categories</option>
             {categories ? categories.map((category)=>
               <option key={category.slug} value={category.slug}>{category.name}</option>
             ) : ""}
