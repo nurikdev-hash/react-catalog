@@ -15,3 +15,8 @@
     font-size: 20px;
     line-height: 0.5;
 }
+
+.navbar .badge{
+    font-size: 12px;
+    padding: 3px 6px;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { filterProducts, getCategories, getProducts } from '../../redux/productReducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../redux/cartReducer';
 
 function Catalog() {
   const dispatch = useDispatch();
@@ -38,6 +39,10 @@ function Catalog() {
     dispatch(filterProducts({category: filterSelect.current.value,page,sort,order}));
   }
 
+  const handleAdd = (product)=>{
+    dispatch(addToCart(product));
+  }
+
   return (
     <div className='container py-5'>
       <div className='d-flex justify-content-between mb-4 pb-4 border-bottom'>
@@ -68,7 +73,11 @@ function Catalog() {
                 <h5>{item.title}</h5>
                 <p className='card-text' style={{ height: "55px", overflow: "hidden" }}>{item.description}</p>
                 <h6 className='text-muted'>${item.price}</h6>
-                <a href="#" className='btn btn-success'>Add To Cart</a>
+                <button
+                  type='button'
+                  className='btn btn-success'
+                  onClick={()=>handleAdd(item)}
+                >Add To Cart</button>
               </div>
             </div>
           </div>) : ""
