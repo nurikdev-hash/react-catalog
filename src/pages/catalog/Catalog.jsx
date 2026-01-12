@@ -62,16 +62,16 @@ function Catalog() {
           </select>
         </div>
       </div>
-      <div className="row g-4">
+      <div className="row g-4 catalog-products">
         {
           products.length > 0 ? products.map(item => <div key={item.id} className="col-3">
             <div className="card">
               <div className=''>
-                <img src={item.thumbnail} style={{ height: "200px", objectFit: "contain" }} className='card-img-top' alt="" />
+                <img src={item.thumbnail} className='card-img-top' alt="" />
               </div>
               <div className="card-body">
                 <h5>{item.title}</h5>
-                <p className='card-text' style={{ height: "55px", overflow: "hidden" }}>{item.description}</p>
+                <p className='card-text'>{item.description}</p>
                 <h6 className='text-muted'>${item.price}</h6>
                 <button
                   type='button'

@@ -20,3 +20,30 @@
     font-size: 12px;
     padding: 3px 6px;
 }
+
+/* Catalog styles */
+
+.catalog-products .card-img-top{
+    height: 200px;
+    object-fit: contain;
+}
+
+.catalog-products .card-text{
+    height: 55px;
+    overflow: hidden;
+}
+
+/* Cart styles */
+
+.cart-table .product-img{
+    width: 150px;
+}
+
+.cart-table .product-desc{
+    max-width: 300px;
+}
+
+.cart-table .input-group .form-control{
+    width: 65px;
+    flex-grow: 0;
+}

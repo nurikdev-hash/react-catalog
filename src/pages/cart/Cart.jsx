@@ -28,7 +28,7 @@ function Cart() {
       <div className='mb-4 pb-4 border-bottom'>
         <h2>Selected Products</h2>
       </div>
-      <table className='table align-middle'>
+      <table className='table align-middle cart-table'>
         <thead>
           <tr className='table-light'>
             <th></th>
@@ -48,11 +48,11 @@ function Cart() {
                 </button>
               </td>
               <td>
-                <img src={item.thumbnail} alt="" style={{ width: "150px" }} />
+                <img src={item.thumbnail} alt="" className='product-img'/>
               </td>
               <td>
                 <h5>{item.title}</h5>
-                <p className='mb-0' style={{maxWidth: "300px"}}>{item.description}</p>
+                <p className='mb-0 product-desc'>{item.description}</p>
               </td>
               <td>
                 <div className='fs-5'>${item.price}</div>
@@ -60,7 +60,7 @@ function Cart() {
               <td>
                 <div className='input-group'>
                   <button onClick={()=>handleDecrement(item)} disabled={item.quantity == 1} type='button' className='btn btn-danger'>-</button>
-                  <input type="text" className='form-control text-center' readOnly value={item.quantity} style={{ width: "65px", flexGrow: "0" }} />
+                  <input type="text" className='form-control text-center' readOnly value={item.quantity} />
                   <button onClick={()=>handleIncrement(item)} disabled={item.quantity == item.minimumOrderQuantity} type='button' className='btn btn-success'>+</button>
                 </div>
               </td>
