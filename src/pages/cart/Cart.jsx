@@ -1,16 +1,26 @@
 import React from 'react'
 import { BsX } from "react-icons/bs";
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteFromCart } from '../../redux/cartReducer';
+import { decreament, deleteFromCart, increament } from '../../redux/cartReducer';
 
 function Cart() {
   const cart = useSelector((store) => store.cart);
   const dispatch = useDispatch();
-  // const [total]
-  console.log(cart);
 
   const handeDelete = (obj)=>{
     dispatch(deleteFromCart(obj));
+  }
+
+  const handleIncrement = (obj) => {
+    if(obj.quantity == obj.minimumOrderQuantity) return;
+
+    dispatch(increament(obj.id));
+  }
+
+  const handleDecrement = (obj) => {
+    if(obj.quantity == 1) return;
+
+    dispatch(decreament(obj.id));
   }
 
   return (
@@ -49,13 +59,13 @@ function Cart() {
               </td>
               <td>
                 <div className='input-group'>
-                  <button type='button' className='btn btn-danger'>-</button>
+                  <button onClick={()=>handleDecrement(item)} disabled={item.quantity == 1} type='button' className='btn btn-danger'>-</button>
                   <input type="text" className='form-control text-center' readOnly value={item.quantity} style={{ width: "65px", flexGrow: "0" }} />
-                  <button type='button' className='btn btn-success'>+</button>
+                  <button onClick={()=>handleIncrement(item)} disabled={item.quantity == item.minimumOrderQuantity} type='button' className='btn btn-success'>+</button>
                 </div>
               </td>
               <td>
-                <div className='fs-5'>${item.price*item.quantity}</div>
+                <div className='fs-5'>${parseFloat((item.price*item.quantity).toFixed(2))}</div>
               </td>
             </tr>
           )}
