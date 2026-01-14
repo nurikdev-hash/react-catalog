@@ -15,7 +15,20 @@ export const userLogin = createAsyncThunk(
         });
         const result = await response.json();
 
-        return result;
+        localStorage.setItem("accessToken", result.accessToken);
+        localStorage.setItem("refreshToken", result.refreshToken);
+
+        const authUser = await fetch('https://dummyjson.com/auth/me', {
+            method: 'GET',
+            headers: {
+                'Authorization': result.accessToken,
+            },
+            // credentials: 'include'
+        });
+
+        const authUserResult = await authUser.json();
+
+        return authUserResult;
     }
 );
 
@@ -33,14 +46,15 @@ const userSlice = createSlice({
             state.status = "int";
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
+        },
+        setUser: (state, action) => {
+            state.user = action.payload;
         }
     },
     extraReducers: (builder) => {
         builder.addCase(userLogin.fulfilled, (state, action) => {
             state.user = action.payload;
             state.status = "success";
-            localStorage.setItem("accessToken", action.payload.accessToken);
-            localStorage.setItem("refreshToken", action.payload.refreshToken);
         })
     }
 });
@@ -49,4 +63,4 @@ const userReducer = userSlice.reducer;
 
 export default userReducer;
 
-export const { logout } = userSlice.actions;
+export const { logout, setUser } = userSlice.actions;
